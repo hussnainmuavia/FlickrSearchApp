@@ -97,7 +97,7 @@ fun FlickerItem(modifier: Modifier = Modifier, photo: PhotoMap? = null) {
                 modifier = modifier
                     .size(60.dp)
                     .fillMaxWidth(),
-                model = photo?.url,
+                model = if (!photo?.url.isNullOrEmpty()) photo?.url else "",
                 contentDescription = "Image",
                 contentScale = ContentScale.Crop,
             )
@@ -106,7 +106,7 @@ fun FlickerItem(modifier: Modifier = Modifier, photo: PhotoMap? = null) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                text = photo?.title.toString(),
+                text = if (!photo?.title.isNullOrEmpty()) photo?.title.toString() else "",
                 style = MaterialTheme.typography.labelSmall
             )
         }
