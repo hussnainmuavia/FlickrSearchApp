@@ -1,6 +1,6 @@
 package com.example.flickersearchapp.network
 
-import com.example.flickersearchapp.models.SearchResult
+import com.example.flickersearchapp.domain.models.SearchResult
 import com.example.flickersearchapp.utils.Constants.KEY_API_KEY
 import com.example.flickersearchapp.utils.Constants.KEY_FORMAT
 import com.example.flickersearchapp.utils.Constants.KEY_NO_JSON_CALLBACK

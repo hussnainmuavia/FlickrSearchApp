@@ -1,4 +1,4 @@
-package com.example.flickersearchapp.models
+package com.example.flickersearchapp.domain.models
 
 data class SearchResult(
     var photos: PhotoData? = null,

@@ -29,7 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.flickersearchapp.models.PhotoMap
+import com.example.flickersearchapp.domain.models.PhotoMap
 import com.example.flickersearchapp.ui.theme.FlickerSearchAppTheme
 
 @Composable

@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -66,12 +68,17 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.5") //  Integration with navigation
     implementation("io.coil-kt:coil-compose:2.5.0") // Load an image from the internet
 
-    // Complete retrofit section needs update, Latest version will require JAVA version update
+    // Retrofit section for network calls
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
+    //Dagger - Hilt
+    implementation("com.google.dagger:hilt-android:2.38.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")
 
 
     testImplementation("junit:junit:4.13.2")

@@ -1,4 +1,4 @@
-package com.example.flickersearchapp.models
+package com.example.flickersearchapp.domain.models
 
 data class PhotoMap(
     val id: String,
