@@ -3,10 +3,13 @@ package com.example.flickersearchapp.ui.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
@@ -20,12 +23,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.flickersearchapp.models.PhotoMap
 import com.example.flickersearchapp.ui.theme.FlickerSearchAppTheme
 
 @Composable
 fun SearchTextFieldComposable(
     modifier: Modifier = Modifier,
-    hintText: String = "Search country",
+    hintText: String = "Search",
     searchText: String = "",
     onTextChange: (newText: String) -> Unit = {},
     onSearchTextSubmit: () -> Unit = {}
@@ -74,7 +78,7 @@ fun SearchComposablePreview() {
 
 
 @Composable
-fun FlickerItem(modifier: Modifier = Modifier, image: String = "", text: String = "") {
+fun FlickerItem(modifier: Modifier = Modifier, photo: PhotoMap? = null) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -91,7 +95,7 @@ fun FlickerItem(modifier: Modifier = Modifier, image: String = "", text: String 
                 modifier = modifier
                     .size(60.dp)
                     .fillMaxWidth(),
-                model = "https://picsum.photos/200",
+                model = photo?.url,
                 contentDescription = "Image"
             )
 
@@ -99,7 +103,7 @@ fun FlickerItem(modifier: Modifier = Modifier, image: String = "", text: String 
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                text = text,
+                text = photo?.title.toString(),
                 style = MaterialTheme.typography.labelSmall
             )
         }
@@ -111,6 +115,27 @@ fun FlickerItem(modifier: Modifier = Modifier, image: String = "", text: String 
 fun FlickerItemPreview() {
     FlickerSearchAppTheme {
         FlickerItem()
+    }
+}
+
+@Composable
+fun PhotosList(modifier: Modifier = Modifier, list: List<PhotoMap> = listOf()) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 16.dp)
+    ) {
+        items(items = list) { photo ->
+            FlickerItem(photo = photo)
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PhotosListPreview() {
+    FlickerSearchAppTheme {
+        PhotosList()
     }
 }
 

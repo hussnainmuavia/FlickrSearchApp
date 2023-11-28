@@ -66,6 +66,13 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.5") //  Integration with navigation
     implementation("io.coil-kt:coil-compose:2.5.0") // Load an image from the internet
 
+    // Complete retrofit section needs update, Latest version will require JAVA version update
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

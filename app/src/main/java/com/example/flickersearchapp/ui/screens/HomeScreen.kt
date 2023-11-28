@@ -5,14 +5,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.flickersearchapp.ui.component.FlickerItem
+import com.example.flickersearchapp.ui.component.PhotosList
 import com.example.flickersearchapp.ui.component.SearchTextFieldComposable
 import com.example.flickersearchapp.ui.theme.FlickerSearchAppTheme
 import com.example.flickersearchapp.viewmodels.HomeScreenViewModel
@@ -20,7 +20,8 @@ import com.example.flickersearchapp.viewmodels.HomeScreenViewModel
 @Composable
 fun HomeScreen(viewModel: HomeScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
 
-    val list = listOf("Hello 1", "Hello 2", "Hello 3", "Hello 4")
+    val uiState by viewModel.uiState.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,13 +32,8 @@ fun HomeScreen(viewModel: HomeScreenViewModel = androidx.lifecycle.viewmodel.com
             searchText = viewModel.searchText,
             onTextChange = { viewModel.updatedSearchText(it) }
         )
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(items = list) { item ->
-                FlickerItem(image = "", text = item)
-            }
-        }
+
+        PhotosList(list = uiState.photosList)
     }
 }
 
