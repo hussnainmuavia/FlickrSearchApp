@@ -64,6 +64,7 @@ fun FlickerSearchAppTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
+        shapes = shapes,
         typography = Typography,
         content = content
     )

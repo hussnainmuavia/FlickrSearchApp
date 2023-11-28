@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.flickersearchapp.ui.component.PhotosList
-import com.example.flickersearchapp.ui.component.SearchTextFieldComposable
+import com.example.flickersearchapp.ui.component.SearchFieldComponent
 import com.example.flickersearchapp.ui.theme.FlickerSearchAppTheme
 import com.example.flickersearchapp.viewmodels.HomeScreenViewModel
 
@@ -25,12 +25,14 @@ fun HomeScreen(viewModel: HomeScreenViewModel = androidx.lifecycle.viewmodel.com
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(8.dp)
             .background(color = MaterialTheme.colorScheme.background)
     ) {
-        SearchTextFieldComposable(
+
+        SearchFieldComponent(
             searchText = viewModel.searchText,
-            onTextChange = { viewModel.updatedSearchText(it) }
+            onTextChange = { viewModel.updatedSearchText(it) },
+            onSearchTextSubmit = { viewModel.getSearchResult() }
         )
 
         PhotosList(list = uiState.photosList)

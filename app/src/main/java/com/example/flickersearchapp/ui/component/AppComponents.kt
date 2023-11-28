@@ -1,5 +1,6 @@
 package com.example.flickersearchapp.ui.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -12,13 +13,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Gray
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,14 +36,12 @@ fun SearchTextFieldComposable(
     modifier: Modifier = Modifier,
     hintText: String = "Search",
     searchText: String = "",
-    onTextChange: (newText: String) -> Unit = {},
-    onSearchTextSubmit: () -> Unit = {}
+    onTextChange: (newText: String) -> Unit = {}
 ) {
     Row(
         modifier = modifier
             .height(48.dp)
-            .fillMaxWidth()
-            .background(color = Color.Gray, shape = RoundedCornerShape(8.dp)),
+            .background(color = Gray, shape = MaterialTheme.shapes.small),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -53,8 +56,7 @@ fun SearchTextFieldComposable(
                 value = searchText,
                 onValueChange = { onTextChange(it) },
                 modifier = Modifier
-                    .background(Color.Gray)
-                    .fillMaxWidth()
+                    .background(Gray)
             )
             if (searchText == "") {
                 Text(
@@ -96,7 +98,8 @@ fun FlickerItem(modifier: Modifier = Modifier, photo: PhotoMap? = null) {
                     .size(60.dp)
                     .fillMaxWidth(),
                 model = photo?.url,
-                contentDescription = "Image"
+                contentDescription = "Image",
+                contentScale = ContentScale.Crop,
             )
 
             Text(
@@ -121,9 +124,9 @@ fun FlickerItemPreview() {
 @Composable
 fun PhotosList(modifier: Modifier = Modifier, list: List<PhotoMap> = listOf()) {
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(top = 16.dp)
+            .padding(top = 8.dp)
     ) {
         items(items = list) { photo ->
             FlickerItem(photo = photo)
@@ -139,3 +142,45 @@ private fun PhotosListPreview() {
     }
 }
 
+@Composable
+fun SearchFieldComponent(
+    modifier: Modifier = Modifier,
+    hintText: String = "Search",
+    searchText: String = "",
+    onTextChange: (newText: String) -> Unit = {},
+    onSearchTextSubmit: () -> Unit = {}
+) {
+    Surface(
+        border = BorderStroke(1.dp, Gray),
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Row(
+            modifier = modifier
+                .height(56.dp)
+                .fillMaxWidth()
+                .background(color = Color.White),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            SearchTextFieldComposable(
+                modifier = modifier
+                    .weight(1f)
+                    .padding(horizontal = 4.dp)
+                    .fillMaxWidth(),
+                searchText = searchText,
+                hintText = hintText,
+                onTextChange = { onTextChange(it) }
+            )
+            Button(modifier = modifier.padding(end = 8.dp), onClick = { onSearchTextSubmit() }) {
+                Text(text = "Search")
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SurveyAnswerPreview() {
+    FlickerSearchAppTheme {
+        SearchFieldComponent()
+    }
+}

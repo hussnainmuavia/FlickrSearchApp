@@ -1,12 +1,10 @@
 package com.example.flickersearchapp.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.flickersearchapp.models.Photo
 import com.example.flickersearchapp.models.PhotoMap
 import com.example.flickersearchapp.network.ApiClient
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,16 +21,15 @@ class HomeScreenViewModel : ViewModel() {
     var searchText by mutableStateOf("")
         private set
 
-    fun updatedSearchText(newValue : String) {
+    fun updatedSearchText(newValue: String) {
         searchText = newValue
-        getSearchResult()
     }
 
-    private fun getSearchResult(){
+    fun getSearchResult() {
         viewModelScope.launch {
-            _uiState.update { PhotoSearchState(isLoading = true)  }
-            fetchImages().let {list ->
-                _uiState.update { PhotoSearchState(isLoading = false, photosList = list!!)  }
+            _uiState.update { PhotoSearchState(isLoading = true) }
+            fetchImages().let { list ->
+                _uiState.update { PhotoSearchState(isLoading = false, photosList = list!!) }
             }
         }
     }
@@ -52,5 +49,8 @@ class HomeScreenViewModel : ViewModel() {
         }
     }
 
-    data class PhotoSearchState(val isLoading : Boolean = false, val photosList : List<PhotoMap> = listOf())
+    data class PhotoSearchState(
+        val isLoading: Boolean = false,
+        val photosList: List<PhotoMap> = listOf()
+    )
 }
