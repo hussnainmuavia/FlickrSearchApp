@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Gray
+import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -84,13 +85,13 @@ fun FlickerItem(modifier: Modifier = Modifier, photo: PhotoMap? = null) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = Color.Transparent, shape = RoundedCornerShape(4.dp)),
+            .background(color = Transparent, shape = RoundedCornerShape(4.dp)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
             modifier = modifier
                 .padding(top = 16.dp)
-                .background(color = Color.Gray),
+                .background(color = Gray),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
@@ -99,7 +100,6 @@ fun FlickerItem(modifier: Modifier = Modifier, photo: PhotoMap? = null) {
                     .fillMaxWidth(),
                 model = if (!photo?.url.isNullOrEmpty()) photo?.url else "",
                 contentDescription = "Image",
-                contentScale = ContentScale.Crop,
             )
 
             Text(
