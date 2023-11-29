@@ -21,11 +21,9 @@ import com.example.flickersearchapp.ui.theme.FlickerSearchAppTheme
 import com.example.flickersearchapp.viewmodels.HomeScreenViewModel
 
 @Composable
-//fun HomeScreen(viewModel: HomeScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
 fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
-
     val uiState by viewModel.uiState.collectAsState()
-    if(uiState.isLoading) {
+    if (uiState.isLoading) {
         LoadingDialog()
     }
     Column(
@@ -34,13 +32,11 @@ fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
             .padding(8.dp)
             .background(color = MaterialTheme.colorScheme.background)
     ) {
-
         SearchFieldComponent(
             searchText = viewModel.searchText,
             onTextChange = { viewModel.updatedSearchText(it) },
             onSearchTextSubmit = { viewModel.getSearch() }
         )
-
         PhotosList(list = uiState.photosList as List<PhotoMap>)
     }
 }
