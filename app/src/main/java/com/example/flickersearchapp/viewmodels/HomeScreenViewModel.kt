@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.flickersearchapp.domain.models.PhotoMap
 import com.example.flickersearchapp.domain.usecases.SearchPhotosUseCase
-import com.example.flickersearchapp.network.ApiClient
 import com.example.flickersearchapp.utils.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

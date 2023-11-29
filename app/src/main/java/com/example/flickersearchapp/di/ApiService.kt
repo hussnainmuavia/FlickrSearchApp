@@ -1,4 +1,4 @@
-package com.example.flickersearchapp.network
+package com.example.flickersearchapp.di
 
 import com.example.flickersearchapp.domain.models.SearchResult
 import com.example.flickersearchapp.utils.Constants.KEY_API_KEY

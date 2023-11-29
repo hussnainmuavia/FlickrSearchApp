@@ -1,7 +1,6 @@
 package com.example.flickersearchapp.di
 
 import com.example.flickersearchapp.domain.repository.SearchPhotosRepository
-import com.example.flickersearchapp.network.ApiService
 import com.example.flickersearchapp.utils.Constants
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
@@ -22,7 +21,7 @@ import javax.inject.Singleton
 object PhotoSearchModule {
     @Provides
     @Singleton
-    fun getPhotoSearchApi() : ApiService{
+    fun getPhotoSearchApi() : ApiService {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(

@@ -120,9 +120,23 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // For Robolectric tests.
+    testImplementation("com.google.dagger:hilt-android-testing:2.48.1")
+    // ...with Kotlin.
+    kaptTest("com.google.dagger:hilt-android-compiler:2.48.1")
+
+    // For instrumented tests.
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.48.1")
+    // ...with Kotlin.
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48.1")
 }
 
 // Allow references to generated code
 kapt {
     correctErrorTypes = true
+}
+
+hilt {
+    enableTransformForLocalTests = true
 }
