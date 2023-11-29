@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.flickersearchapp.domain.models.PhotoMap
+import com.example.flickersearchapp.ui.component.LoadingDialog
 import com.example.flickersearchapp.ui.component.PhotosList
 import com.example.flickersearchapp.ui.component.SearchFieldComponent
 import com.example.flickersearchapp.ui.theme.FlickerSearchAppTheme
@@ -24,7 +25,9 @@ import com.example.flickersearchapp.viewmodels.HomeScreenViewModel
 fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
 
     val uiState by viewModel.uiState.collectAsState()
-
+    if(uiState.isLoading) {
+        LoadingDialog()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()

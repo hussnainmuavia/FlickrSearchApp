@@ -33,36 +33,6 @@ class HomeScreenViewModel @Inject constructor(
         searchText = newValue
     }
 
-    fun getSearchResult() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _uiState.update { PhotoSearchState(isLoading = true) }
-            fetchImages().let { list ->
-                _uiState.update { PhotoSearchState(isLoading = false, photosList = list!!) }
-            }
-        }
-    }
-
-    private suspend fun fetchImages(): List<PhotoMap>? {
-        if (searchText.isBlank()) {
-            return emptyList()
-        }
-
-        val searchResponse = ApiClient.client.getSearchResults(text = searchText)
-        return searchResponse.photos?.photo?.map { photo ->
-            PhotoMap(
-                id = photo?.id.toString(),
-                url = "https://farm${photo?.farm}.staticflickr.com/${photo?.server}/${photo?.id}_${photo?.secret}.jpg",
-                title = photo?.title.toString()
-            )
-        }
-    }
-
-    data class PhotoSearchState(
-        val isLoading: Boolean = false,
-        val photosList: List<PhotoMap?>? = emptyList(),
-        val message: String = ""
-    )
-
     fun getSearch() = viewModelScope.launch(Dispatchers.IO) {
         searchUseCase.invoke(query = searchText).collect { responseState ->
             when (responseState) {
@@ -90,4 +60,10 @@ class HomeScreenViewModel @Inject constructor(
             }
         }
     }
+
+    data class PhotoSearchState(
+        val isLoading: Boolean = false,
+        val photosList: List<PhotoMap?>? = emptyList(),
+        val message: String = ""
+    )
 }

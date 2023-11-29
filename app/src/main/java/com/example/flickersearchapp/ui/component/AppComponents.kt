@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -24,13 +25,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.Transparent
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import com.example.flickersearchapp.domain.models.PhotoMap
 import com.example.flickersearchapp.ui.theme.FlickerSearchAppTheme
+
 
 @Composable
 fun SearchTextFieldComposable(
@@ -56,8 +59,7 @@ fun SearchTextFieldComposable(
             BasicTextField(
                 value = searchText,
                 onValueChange = { onTextChange(it) },
-                modifier = Modifier
-                    .background(Gray)
+                modifier = Modifier.background(Gray)
             )
             if (searchText == "") {
                 Text(
@@ -151,8 +153,7 @@ fun SearchFieldComponent(
     onSearchTextSubmit: () -> Unit = {}
 ) {
     Surface(
-        border = BorderStroke(1.dp, Gray),
-        modifier = modifier.fillMaxWidth()
+        border = BorderStroke(1.dp, Gray), modifier = modifier.fillMaxWidth()
     ) {
         Row(
             modifier = modifier
@@ -161,15 +162,13 @@ fun SearchFieldComponent(
                 .background(color = Color.White),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            SearchTextFieldComposable(
-                modifier = modifier
-                    .weight(1f)
-                    .padding(horizontal = 4.dp)
-                    .fillMaxWidth(),
+            SearchTextFieldComposable(modifier = modifier
+                .weight(1f)
+                .padding(horizontal = 4.dp)
+                .fillMaxWidth(),
                 searchText = searchText,
                 hintText = hintText,
-                onTextChange = { onTextChange(it) }
-            )
+                onTextChange = { onTextChange(it) })
             Button(modifier = modifier.padding(end = 8.dp), onClick = { onSearchTextSubmit() }) {
                 Text(text = "Search")
             }
@@ -182,5 +181,15 @@ fun SearchFieldComponent(
 fun SurveyAnswerPreview() {
     FlickerSearchAppTheme {
         SearchFieldComponent()
+    }
+}
+
+@Composable
+fun LoadingDialog() {
+    Dialog(
+        onDismissRequest = { },
+        DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+    ) {
+        CircularProgressIndicator()
     }
 }
