@@ -14,13 +14,21 @@ data class PhotoData(
 )
 
 data class Photo(
-    var farm: Int? = null,
-    var id: String? = null,
-    var isfamily: Int? = null,
-    var isfriend: Int? = null,
-    var ispublic: Int? = null,
-    var owner: String? = null,
-    var secret: String? = null,
-    var server: String? = null,
-    var title: String? = null
-)
+    var farm: Int,
+    var id: String,
+    var isfamily: Int,
+    var isfriend: Int,
+    var ispublic: Int,
+    var owner: String,
+    var secret: String,
+    var server: String,
+    var title: String
+) {
+    fun toPhoto() : PhotoMap {
+        return PhotoMap(
+            id = id,
+            url = "https://farm${farm}.staticflickr.com/${server}/${id}_${secret}.jpg",
+            title = title
+        )
+    }
+}

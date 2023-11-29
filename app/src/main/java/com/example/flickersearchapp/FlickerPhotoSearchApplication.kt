@@ -1,7 +1,7 @@
-package com.example.flickersearchapp.utils
+package com.example.flickersearchapp
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class FlickerPhotoApplication : Application()
+class FlickerPhotoSearchApplication : Application()

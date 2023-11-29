@@ -8,7 +8,7 @@ import androidx.navigation.navigation
 import com.example.flickersearchapp.ui.component.Routes
 import com.example.flickersearchapp.ui.screens.HomeScreen
 
-fun NavGraphBuilder.overviewNavigation(navController: NavController, context: Context) {
+fun NavGraphBuilder.overviewNavigation() {
     navigation(
         startDestination = Destination.HomeScreen.route, route = Routes.OVERVIEW.value
     ) {

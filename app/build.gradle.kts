@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    //id("com.google.dagger.hilt.android")
+    //kotlin("kapt")
 }
 
 android {
@@ -20,6 +22,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -32,11 +35,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -76,9 +79,34 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
     //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.38.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
-    kapt("androidx.hilt:hilt-compiler:1.1.0")
+    //implementation("com.google.dagger:hilt-android:2.38.1")
+   // kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+   /* implementation("com.google.dagger:hilt-android:2.48.1")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
+    //implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0")
+    kapt ("com.google.dagger:hilt-android-compiler:2.44")
+   // kapt ("com.google.dagger:hilt-compiler:2.48.1")
+    kapt ("androidx.hilt:hilt-compiler:1.1.0")
+    implementation ("androidx.fragment:fragment-ktx:1.6.2")
+*/
+    // For local unit tests
+ //   testImplementation("com.google.dagger:hilt-android-testing:2.48.1")
+ //   kaptTest("com.google.dagger:hilt-compiler:2.48.1")
+
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+    //kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    kapt ("com.google.dagger:hilt-compiler:2.48.1")
+   // kapt("androidx.hilt:hilt-compiler:1.1.0")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.1.0")
+    implementation("androidx.hilt:hilt-work:1.1.0")
+
+ /*   implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+    implementation ("com.google.dagger:hilt-android:2.48.1")
+    kapt ("com.google.dagger:hilt-android-compiler:2.48.1")
+    implementation ( "androidx.fragment:fragment-ktx:1.6.2")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")*/
 
 
     testImplementation("junit:junit:4.13.2")
@@ -88,4 +116,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }

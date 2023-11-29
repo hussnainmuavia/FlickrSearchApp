@@ -12,13 +12,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.flickersearchapp.domain.models.PhotoMap
 import com.example.flickersearchapp.ui.component.PhotosList
 import com.example.flickersearchapp.ui.component.SearchFieldComponent
 import com.example.flickersearchapp.ui.theme.FlickerSearchAppTheme
 import com.example.flickersearchapp.viewmodels.HomeScreenViewModel
 
 @Composable
-fun HomeScreen(viewModel: HomeScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+//fun HomeScreen(viewModel: HomeScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
 
     val uiState by viewModel.uiState.collectAsState()
 
@@ -32,10 +35,10 @@ fun HomeScreen(viewModel: HomeScreenViewModel = androidx.lifecycle.viewmodel.com
         SearchFieldComponent(
             searchText = viewModel.searchText,
             onTextChange = { viewModel.updatedSearchText(it) },
-            onSearchTextSubmit = { viewModel.getSearchResult() }
+            onSearchTextSubmit = { viewModel.getSearch() }
         )
 
-        PhotosList(list = uiState.photosList)
+        PhotosList(list = uiState.photosList as List<PhotoMap>)
     }
 }
 

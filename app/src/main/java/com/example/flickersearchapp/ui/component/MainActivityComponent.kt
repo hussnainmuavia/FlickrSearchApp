@@ -16,7 +16,7 @@ import com.example.flickersearchapp.ui.screens.SplashScreen
 
 
 @Composable
-fun MainActivityComponent(context: Context = LocalContext.current) {
+fun MainActivityComponent() {
     val navController = rememberNavController()
     Scaffold { innerPadding ->
         NavHost(
@@ -31,7 +31,7 @@ fun MainActivityComponent(context: Context = LocalContext.current) {
                     }
                 }
             }
-            overviewNavigation(navController, context = context)
+            overviewNavigation()
         }
     }
 }
