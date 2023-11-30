@@ -139,6 +139,11 @@ fun PhotosList(
 ) {
     val listState = rememberLazyListState()
     var page by remember { mutableStateOf(1) }
+    if (listState.isScrolledToTheEnd()) {
+        page += 1
+        onPageUpdate(page)
+        Toast.makeText(LocalContext.current, "${page}", Toast.LENGTH_SHORT).show()
+    }
 
     LazyColumn(
         state = listState,
@@ -148,11 +153,6 @@ fun PhotosList(
     ) {
         itemsIndexed(items = list) { index, photo ->
             FlickerItem(photo = photo)
-            if (listState.isScrolledToTheEnd()) {
-                page += 1
-                onPageUpdate(page)
-                Toast.makeText(LocalContext.current, "${index}", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 }
