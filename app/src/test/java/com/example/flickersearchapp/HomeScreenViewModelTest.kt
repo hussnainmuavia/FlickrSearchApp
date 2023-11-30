@@ -3,8 +3,11 @@ package com.example.flickersearchapp
 import com.example.flickersearchapp.di.PhotoSearchModule
 import com.example.flickersearchapp.domain.repository.SearchPhotosRepository
 import com.example.flickersearchapp.domain.usecases.SearchPhotosUseCase
+import com.example.flickersearchapp.utils.ResponseState
 import com.example.flickersearchapp.viewmodels.HomeScreenViewModel
-import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -13,44 +16,23 @@ class HomeScreenViewModelTest {
     private val apiInterface = PhotoSearchModule.getPhotoSearchApi()
     private val photosRepository = SearchPhotosRepository(this.apiInterface)
     private val searchPhotosUseCase = SearchPhotosUseCase(this.photosRepository)
-    private val popularMoviesViewModel = HomeScreenViewModel(searchPhotosUseCase)
+    private val homeScreenViewModel = HomeScreenViewModel(searchPhotosUseCase)
 
     @Test
-    fun `when use case returns success then resource should be success`() {
+    fun `when search text set then resource should be success`() {
         runTest {
-
-            /* coEvery { searchPhotosUseCase.invoke("Hello") } returns flow {
-                 emit(
-                     ResponseState.Success(
-                         listOf()
-                     )
-                 )
-             }*/
-
-            //coVerify(exactly = 1) { searchPhotosUseCase.invoke("Hello") }
-            assert(popularMoviesViewModel.uiState.value != null)
-            //   assert(popularMoviesViewModel.getSearch().value is ResponseState.Success)
-            assert(popularMoviesViewModel.uiState.value.photosList != null)
+            homeScreenViewModel.updatedSearchText("Hello")
+            assert(homeScreenViewModel.searchText == "Hello")
+            assert(homeScreenViewModel.uiState.value != null)
+            assert(homeScreenViewModel.uiState.value.photosList != null)
         }
     }
 
     @Test
-    fun `when use case returns error then resource should be error`() {
+    fun `when search list returns then resource should be success`() {
         runTest {
-            //every { apiObserver.onChanged(any()) } answers { }
-            /*coEvery { searchPhotosUseCase.invoke("Hello") } returns flow {
-                emit(
-                    ResponseState.Error(
-                        "Unexpected error"
-                    )
-                )
-            }*/
-
-            //coVerify(exactly = 1) { searchPhotosUseCase.invoke("Hello") }
-            assert(popularMoviesViewModel.uiState.value.photosList != null)
-            //assert(popularMoviesViewModel.getSearch() is ResponseState.Error)
-            popularMoviesViewModel.updatedSearchText("Hello")
-           // assert(popularMoviesViewModel.searchText == "Hello")
+            assert(homeScreenViewModel.uiState.value != null)
+            assert(homeScreenViewModel.uiState.value.photosList != null)
         }
     }
 }
