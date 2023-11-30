@@ -25,6 +25,9 @@ class HomeScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(PhotoSearchState())
     val uiState: StateFlow<PhotoSearchState> = _uiState.asStateFlow()
 
+    /**
+     * mutable State [searchText] of string type that would being updated when user will type
+     */
     var searchText by mutableStateOf("")
         private set
 
