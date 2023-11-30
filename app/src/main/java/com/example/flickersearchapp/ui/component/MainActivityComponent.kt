@@ -24,6 +24,11 @@ fun MainActivityComponent() {
             startDestination = Routes.SPLASHSCREEN.value,
             modifier = Modifier.padding(innerPadding)
         ) {
+            /*
+            * I have added a Splash Screen for navigation graph just to demonstrate between screens.
+            * This would also better demonstration if we follow single activity architecture by using
+            * compose and screen buildings.
+            * */
             composable(Routes.SPLASHSCREEN.value) {
                 SplashScreen {
                     navController.navigate(Routes.OVERVIEW.value) {
@@ -31,11 +36,21 @@ fun MainActivityComponent() {
                     }
                 }
             }
+            /*
+            * I have added a separate navigation graph just to demonstrate the navigation graph.
+            * This would also better demonstrate the separation of concerns between the module level
+            * navigation for example if we have pre-login/post-login navigation etc, so that we could define
+            * our separate navigation just like this
+            * */
             overviewNavigation()
         }
     }
 }
 
+/*
+* Routes to drive the navigation through them like
+* HomeScreen is being named as overview route and splash screen is as splashScreen.
+* */
 enum class Routes(val value: String) {
     OVERVIEW("overview"),
     SPLASHSCREEN("splashScreen")
