@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,13 +23,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -130,8 +132,14 @@ fun FlickerItemPreview() {
 }
 
 @Composable
-fun PhotosList(modifier: Modifier = Modifier, list: List<PhotoMap> = listOf()) {
+fun PhotosList(
+    modifier: Modifier = Modifier,
+    list: List<PhotoMap> = listOf(),
+    onPageUpdate: (page: Int) -> Unit = {}
+) {
     val listState = rememberLazyListState()
+    var page by remember { mutableStateOf(1) }
+
     LazyColumn(
         state = listState,
         modifier = modifier
@@ -141,6 +149,8 @@ fun PhotosList(modifier: Modifier = Modifier, list: List<PhotoMap> = listOf()) {
         itemsIndexed(items = list) { index, photo ->
             FlickerItem(photo = photo)
             if (listState.isScrolledToTheEnd()) {
+                page += 1
+                onPageUpdate(page)
                 Toast.makeText(LocalContext.current, "${index}", Toast.LENGTH_SHORT).show()
             }
         }
@@ -205,4 +215,5 @@ fun LoadingDialog() {
     }
 }
 
-fun LazyListState.isScrolledToTheEnd() = layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount -1
+fun LazyListState.isScrolledToTheEnd() =
+    layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1

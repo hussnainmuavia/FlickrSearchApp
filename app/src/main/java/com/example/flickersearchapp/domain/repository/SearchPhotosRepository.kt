@@ -51,15 +51,15 @@ class SearchPhotosRepository @Inject constructor(
                  *  }
             }*/
 
-    suspend fun getSearchPhotos(query: String): SearchResult {
-        val networkResult = apiService.getSearchResults(text = query)
+    suspend fun getSearchPhotos(query: String, page: Int): SearchResult {
+        val networkResult = apiService.getSearchResults(text = query, page = page)
         // Mutex to make writes to cached values thread-safe.
         // Thread-safe write to search results.
         latestSearchResultMutex.withLock {
             this.mSearchResult = networkResult
         }
 
-        mSearchResult = apiService.getSearchResults(text = query)
+        //mSearchResult = apiService.getSearchResults(text = query, page = page)
         return latestSearchResultMutex.withLock { mSearchResult as SearchResult }
     }
 }

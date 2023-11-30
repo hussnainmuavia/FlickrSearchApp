@@ -35,9 +35,17 @@ fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
         SearchFieldComponent(
             searchText = viewModel.searchText,
             onTextChange = { viewModel.updatedSearchText(it) },
-            onSearchTextSubmit = { viewModel.getSearch() }
+            onSearchTextSubmit = {
+                viewModel.updatedPageState(newValue = 1)
+                viewModel.getSearch(uiState.page)
+            }
         )
-        PhotosList(list = uiState.photosList as List<PhotoMap>)
+        PhotosList(
+            list = uiState.photosList as List<PhotoMap>,
+            onPageUpdate = {
+                viewModel.getSearch(page = it)
+            }
+        )
     }
 }
 

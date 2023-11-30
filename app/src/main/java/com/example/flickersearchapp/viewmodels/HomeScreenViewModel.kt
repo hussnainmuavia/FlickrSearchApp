@@ -35,8 +35,8 @@ class HomeScreenViewModel @Inject constructor(
         searchText = newValue
     }
 
-    fun getSearch() = viewModelScope.launch(Dispatchers.IO) {
-        searchUseCase.invoke(query = searchText).collect { responseState ->
+    fun getSearch(page: Int) = viewModelScope.launch(Dispatchers.IO) {
+        searchUseCase.invoke(query = searchText, page = page).collect { responseState ->
             when (responseState) {
                 is ResponseState.Loading -> {
                     _uiState.update { PhotoSearchState(isLoading = true) }
@@ -63,9 +63,16 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
+    fun updatedPageState(newValue: Int) {
+        _uiState.update {
+            PhotoSearchState(page = newValue)
+        }
+    }
+
     data class PhotoSearchState(
         val isLoading: Boolean = false,
         val photosList: List<PhotoMap?>? = emptyList(),
-        val message: String = ""
+        val message: String = "",
+        val page: Int = 1
     )
 }

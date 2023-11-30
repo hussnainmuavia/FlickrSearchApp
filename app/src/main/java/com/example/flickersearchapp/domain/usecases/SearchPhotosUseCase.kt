@@ -10,11 +10,11 @@ import java.io.IOException
 import javax.inject.Inject
 
 class SearchPhotosUseCase @Inject constructor(private val repository: SearchPhotosRepository) {
-    operator fun invoke(query: String): Flow<ResponseState<List<PhotoMap?>?>> = flow {
+    operator fun invoke(query: String, page: Int): Flow<ResponseState<List<PhotoMap?>?>> = flow {
         try {
             emit(ResponseState.Loading<List<PhotoMap?>?>())
             val searchResult =
-                repository.getSearchPhotos(query = query).photos?.photo?.map { it?.toPhoto() }
+                repository.getSearchPhotos(query = query, page = page).photos?.photo?.map { it?.toPhoto() }
             emit(ResponseState.Success<List<PhotoMap?>?>(searchResult))
         } catch (ex: HttpException) {
             emit(
