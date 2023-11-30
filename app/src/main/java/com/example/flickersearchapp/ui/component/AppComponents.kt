@@ -131,11 +131,7 @@ fun FlickerItemPreview() {
 
 @Composable
 fun PhotosList(modifier: Modifier = Modifier, list: List<PhotoMap> = listOf()) {
-
     val listState = rememberLazyListState()
-    val itemHeight = with(LocalDensity.current) { 80.dp.toPx() } // Your item height
-    val scrollPos = listState.firstVisibleItemIndex * itemHeight + listState.firstVisibleItemScrollOffset
-
     LazyColumn(
         state = listState,
         modifier = modifier
@@ -209,4 +205,4 @@ fun LoadingDialog() {
     }
 }
 
-fun LazyListState.isScrolledToTheEnd() = layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount
+fun LazyListState.isScrolledToTheEnd() = layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount -1
