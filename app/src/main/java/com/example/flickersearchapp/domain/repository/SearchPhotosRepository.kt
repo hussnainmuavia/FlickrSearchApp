@@ -2,12 +2,16 @@ package com.example.flickersearchapp.domain.repository
 
 import com.example.flickersearchapp.di.ApiService
 import com.example.flickersearchapp.domain.models.SearchResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 class SearchPhotosRepository @Inject constructor(
     private val apiService: ApiService,
+    private val externalScope: CoroutineScope
+
 ) {
 
     // Mutex to make writes to cached values thread-safe.
@@ -51,9 +55,8 @@ class SearchPhotosRepository @Inject constructor(
 
     suspend fun getSearchPhotos(query: String): SearchResult {
         val networkResult = apiService.getSearchResults(text = query)
-
         // Mutex to make writes to cached values thread-safe.
-        // Thread-safe write to latestNews
+        // Thread-safe write to search results.
         latestSearchResultMutex.withLock {
             this.mSearchResult = networkResult
         }
