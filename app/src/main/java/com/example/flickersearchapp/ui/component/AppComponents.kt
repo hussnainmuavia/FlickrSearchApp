@@ -1,5 +1,6 @@
 package com.example.flickersearchapp.ui.component
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,7 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
@@ -25,6 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -125,13 +131,22 @@ fun FlickerItemPreview() {
 
 @Composable
 fun PhotosList(modifier: Modifier = Modifier, list: List<PhotoMap> = listOf()) {
+
+    val listState = rememberLazyListState()
+    val itemHeight = with(LocalDensity.current) { 80.dp.toPx() } // Your item height
+    val scrollPos = listState.firstVisibleItemIndex * itemHeight + listState.firstVisibleItemScrollOffset
+
     LazyColumn(
+        state = listState,
         modifier = modifier
             .fillMaxSize()
             .padding(top = 8.dp)
     ) {
-        items(items = list) { photo ->
+        itemsIndexed(items = list) { index, photo ->
             FlickerItem(photo = photo)
+            if (listState.isScrolledToTheEnd()) {
+                Toast.makeText(LocalContext.current, "${index}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
@@ -193,3 +208,5 @@ fun LoadingDialog() {
         CircularProgressIndicator()
     }
 }
+
+fun LazyListState.isScrolledToTheEnd() = layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount

@@ -10,8 +10,6 @@ import javax.inject.Inject
 
 class SearchPhotosRepository @Inject constructor(
     private val apiService: ApiService,
-    private val externalScope: CoroutineScope
-
 ) {
 
     // Mutex to make writes to cached values thread-safe.
