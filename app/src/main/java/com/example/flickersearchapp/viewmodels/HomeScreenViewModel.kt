@@ -52,7 +52,7 @@ class HomeScreenViewModel @Inject constructor(
                     _uiState.update {
                         PhotoSearchState(
                             isLoading = false,
-                            message = responseState.message ?: "An unexpected error occured"
+                            message = responseState.message ?: "An unexpected error occurred"
                         )
                     }
                 }

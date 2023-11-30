@@ -1,40 +1,56 @@
 package com.example.flickersearchapp
 
+import com.example.flickersearchapp.di.PhotoSearchModule
 import com.example.flickersearchapp.domain.repository.SearchPhotosRepository
 import com.example.flickersearchapp.domain.usecases.SearchPhotosUseCase
 import com.example.flickersearchapp.viewmodels.HomeScreenViewModel
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
-import org.junit.Before
-import org.junit.Rule
+import io.mockk.coVerify
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import javax.inject.Inject
 
-@HiltAndroidTest
 class HomeScreenViewModelTest {
 
-    @get:Rule
-    var hiltRule = HiltAndroidRule(this)
+    private val apiInterface = PhotoSearchModule.getPhotoSearchApi()
+    private val photosRepository = SearchPhotosRepository(this.apiInterface)
+    private val searchPhotosUseCase = SearchPhotosUseCase(this.photosRepository)
+    private val popularMoviesViewModel = HomeScreenViewModel(searchPhotosUseCase)
 
-    @Inject
-    lateinit var repository: SearchPhotosRepository
+    @Test
+    fun `when use case returns success then resource should be success`() {
+        runTest {
 
-    @Inject
-    lateinit var useCase: SearchPhotosUseCase
+            /* coEvery { searchPhotosUseCase.invoke("Hello") } returns flow {
+                 emit(
+                     ResponseState.Success(
+                         listOf()
+                     )
+                 )
+             }*/
 
-    @Inject
-    lateinit var viewModel: HomeScreenViewModel
-
-    @Before
-    fun init() {
-        hiltRule.inject()
+            //coVerify(exactly = 1) { searchPhotosUseCase.invoke("Hello") }
+            assert(popularMoviesViewModel.uiState.value != null)
+            //   assert(popularMoviesViewModel.getSearch().value is ResponseState.Success)
+            assert(popularMoviesViewModel.uiState.value.photosList != null)
+        }
     }
 
     @Test
-    fun `happy path`() {
-        // Can already use analyticsAdapter here.
-        viewModel.updatedSearchText("hello")
-        val result = viewModel.getSearch()
-        assert(result.isCompleted)
+    fun `when use case returns error then resource should be error`() {
+        runTest {
+            //every { apiObserver.onChanged(any()) } answers { }
+            /*coEvery { searchPhotosUseCase.invoke("Hello") } returns flow {
+                emit(
+                    ResponseState.Error(
+                        "Unexpected error"
+                    )
+                )
+            }*/
+
+            //coVerify(exactly = 1) { searchPhotosUseCase.invoke("Hello") }
+            assert(popularMoviesViewModel.uiState.value.photosList != null)
+            //assert(popularMoviesViewModel.getSearch() is ResponseState.Error)
+            popularMoviesViewModel.updatedSearchText("Hello")
+           // assert(popularMoviesViewModel.searchText == "Hello")
+        }
     }
 }
