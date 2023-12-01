@@ -1,5 +1,6 @@
 package com.example.flickersearchapp.ui.component
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -23,8 +24,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -135,14 +138,18 @@ fun FlickerItemPreview() {
 fun PhotosList(
     modifier: Modifier = Modifier,
     list: List<PhotoMap> = listOf(),
-    onPageUpdate: (page: Int) -> Unit = {}
+    onPageUpdate: (page: Int) -> Unit = {},
+    isRefreshing : Boolean = false
 ) {
     val listState = rememberLazyListState()
-    var page by remember { mutableStateOf(1) }
-    if (listState.isScrolledToTheEnd()) {
-        page += 1
-        onPageUpdate(page)
-        Toast.makeText(LocalContext.current, "${page}", Toast.LENGTH_SHORT).show()
+    var page by remember { mutableIntStateOf(0) }
+
+    val isScrollToBottom = remember(listState) {
+        derivedStateOf {
+            val index = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+            val count = listState.layoutInfo.totalItemsCount - 1
+            listState.isScrollInProgress.not() && index == count
+        }
     }
 
     LazyColumn(
@@ -217,3 +224,5 @@ fun LoadingDialog() {
 
 fun LazyListState.isScrolledToTheEnd() =
     layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
+
+fun LazyListState.lastIndex() = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1

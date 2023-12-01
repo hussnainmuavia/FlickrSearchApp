@@ -19,6 +19,7 @@ import com.example.flickersearchapp.ui.component.PhotosList
 import com.example.flickersearchapp.ui.component.SearchFieldComponent
 import com.example.flickersearchapp.ui.theme.FlickerSearchAppTheme
 import com.example.flickersearchapp.viewmodels.HomeScreenViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
