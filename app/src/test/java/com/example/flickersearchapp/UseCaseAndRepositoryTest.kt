@@ -47,13 +47,13 @@ class UseCaseAndRepositoryTest {
         val apiInterface = PhotoSearchModule.getPhotoSearchApi()
         val repository = SearchPhotosRepository(apiInterface)
         val searchResult = SearchPhotosUseCase(repository)
-        assert(searchResult.invoke("Hello").count() > 0)
+        assert(searchResult.invoke("Hello", viewModelScope).count() > 0)
     }
 
     @Test
     fun `when use case returns success then resource should be success`() {
         runBlocking {
-            val searchUseCase = photosUseCase.invoke("hello")
+            val searchUseCase = photosUseCase.invoke("hello", viewModelScope)
             val eventCount = searchUseCase.count()
             assert(eventCount >= 2)
 
@@ -71,7 +71,7 @@ class UseCaseAndRepositoryTest {
     @Test
     fun `when use case returns error then resource returned should be error`() {
         runTest {
-            val searchUseCase = photosUseCase.invoke("hello")
+            val searchUseCase = photosUseCase.invoke("hello", viewModelScope)
             val eventCount = searchUseCase.count()
             assert(eventCount == 2)
 

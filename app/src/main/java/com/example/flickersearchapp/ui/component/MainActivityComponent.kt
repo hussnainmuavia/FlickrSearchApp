@@ -11,7 +11,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.flickersearchapp.ui.navigation.Destination
 import com.example.flickersearchapp.ui.navigation.overviewNavigation
+import com.example.flickersearchapp.ui.screens.HomeScreen
 import com.example.flickersearchapp.ui.screens.SplashScreen
 
 
@@ -32,17 +34,26 @@ fun MainActivityComponent() {
             composable(Routes.SPLASHSCREEN.value) {
                 SplashScreen {
                     navController.navigate(Routes.OVERVIEW.value) {
+                        //Pop out the splash route so that we wont get back here from home/overview screen
                         popUpTo(Routes.SPLASHSCREEN.value) { inclusive = true }
                     }
                 }
             }
             /*
-            * I have added a separate navigation graph just to demonstrate the navigation graph.
+            * I have added a separate navigation graph [overviewNavigation] just to demonstrate the navigation graph.
             * This would also better demonstrate the separation of concerns between the module level
-            * navigation for example if we have pre-login/post-login navigation etc, so that we could define
-            * our separate navigation just like this
+            * navigation for example if we have e.g. pre-login/post-login navigation etc,
+            * so that we could define our separate navigation just like this.
             * */
             overviewNavigation()
+
+            /** If we don't want to use separate navigation graph then we could simple draw our
+            * composable as below: e.g. composable(Routes.OVERVIEW.value)
+            * This is the example of the composable route if we don't use navGraph [overviewNavigation]
+            **/
+            /*composable(Routes.OVERVIEW.value) {
+                HomeScreen()
+            }*/
         }
     }
 }

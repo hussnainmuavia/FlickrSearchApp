@@ -1,19 +1,13 @@
 package com.example.flickersearchapp.domain.repository
 
 import com.example.flickersearchapp.di.ApiService
+import com.example.flickersearchapp.domain.models.PagedResponse
 import com.example.flickersearchapp.domain.models.SearchResult
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 class SearchPhotosRepository @Inject constructor(
     private val apiService: ApiService,
 ) {
-
-    // Mutex to make writes to cached values thread-safe.
-    private val latestSearchResultMutex = Mutex()
 
     /**
      * It's important that each repository defines a single source of truth.
@@ -35,7 +29,8 @@ class SearchPhotosRepository @Inject constructor(
         }
         /*get() {
             return if (mSearchResult != null) {
-            *//**
+            */
+            /**
              *  When we will get the data of object it will check if the  object of
              *  [mSearchResult] is not empty it will return the object in memory.
              *  So here we can save additional calls in case of local db access or network
@@ -51,15 +46,12 @@ class SearchPhotosRepository @Inject constructor(
                  *  }
             }*/
 
-    suspend fun getSearchPhotos(query: String, page: Int): SearchResult {
+    suspend fun getSearchPhotos(query: String, page: Int): PagedResponse {
         val networkResult = apiService.getSearchResults(text = query, page = page)
-        // Mutex to make writes to cached values thread-safe.
-        // Thread-safe write to search results.
-        latestSearchResultMutex.withLock {
-            this.mSearchResult = networkResult
-        }
-
-        //mSearchResult = apiService.getSearchResults(text = query, page = page)
-        return latestSearchResultMutex.withLock { mSearchResult as SearchResult }
+        return PagedResponse(
+            data = networkResult.photos?.photo,
+            total = networkResult.photos?.total?: 0,
+            page = page
+        )
     }
 }
