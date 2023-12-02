@@ -12,11 +12,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +26,10 @@ class HomeScreenViewModel @Inject constructor(
     val uiState: StateFlow<PhotoSearchState> = _uiState.asStateFlow()
 
     /**
-     * mutable State [searchText] of string type that would being updated when user will type
+     * mutable State [searchText] of string type that would
+     * being updated when user will type a query
+     * The UI layer should not have direct access to it;
+     * instead, defined a function [updatedSearchText] to notify the state about user's query.
      */
     var searchText by mutableStateOf("")
         private set
@@ -41,6 +42,12 @@ class HomeScreenViewModel @Inject constructor(
         _search.value = query
     }
 
+    /**
+     * Taking an input from the user, such as a query string [_search],
+     * and converting it to the request output to display.
+     * Setting this up requires listening for and capturing the user's query input,
+     * performing the request, and pushing the query result back to the UI.
+     * */
     private val _search = MutableStateFlow("")
     private val search = _search.asStateFlow()
 
