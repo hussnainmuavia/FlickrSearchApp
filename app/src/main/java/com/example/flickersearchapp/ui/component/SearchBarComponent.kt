@@ -11,16 +11,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.flickersearchapp.R
 import com.example.flickersearchapp.ui.theme.FlickerSearchAppTheme
 
 
 @Composable
 fun SearchBarComponent(
     modifier: Modifier = Modifier,
-    label: String = "Search",
-    placeholder: String = "Search",
+    label: String = LocalContext.current.getString(R.string.label_search),
+    placeholder: String = LocalContext.current.getString(R.string.label_search),
     searchText: String = "",
     onTextChange: (text: String) -> Unit = {},
     onSearchTextSubmit: () -> Unit = {},
@@ -55,7 +57,7 @@ fun SearchBarComponent(
             Button(
                 modifier = modifier.padding(top = 8.dp, end = 8.dp),
                 onClick = { onSearchTextSubmit() }) {
-                Text(text = "Search")
+                Text(text = LocalContext.current.getString(R.string.label_search))
             }
         }
     }

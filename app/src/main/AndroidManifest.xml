@@ -19,6 +19,7 @@
         <activity
             android:name="com.example.flickersearchapp.MainActivity"
             android:exported="true"
+            android:screenOrientation="user"
             android:theme="@style/Theme.FlickerSearchApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

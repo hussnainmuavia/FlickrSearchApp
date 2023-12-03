@@ -10,12 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.flickersearchapp.R
 import com.example.flickersearchapp.domain.models.Photo
 import com.example.flickersearchapp.ui.component.LoadingDialog
 import com.example.flickersearchapp.ui.component.PhotosList
@@ -41,8 +43,8 @@ fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
     ) {
         SearchBarComponent(
             searchText = viewModel.searchText,
-            label = "Search",
-            placeholder = "Search photos",
+            label = LocalContext.current.getString(R.string.label_search),
+            placeholder = LocalContext.current.getString(R.string.label_search_photos),
             onTextChange = { viewModel.updatedSearchText(it) },
             onSearchTextSubmit = {
                 viewModel.setSearch(viewModel.searchText)

@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "FlickerSearchApp"
+rootProject.name = "Flicker Search"
 include(":app")
  
