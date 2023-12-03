@@ -36,7 +36,7 @@ object PhotoSearchModule {
                     Constants.CONNECTION_TIMEOUT_MS,
                     TimeUnit.SECONDS
                 ).addInterceptor(HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BASIC
+                    level = HttpLoggingInterceptor.Level.BODY
                 }).build()
             )
             .build()
