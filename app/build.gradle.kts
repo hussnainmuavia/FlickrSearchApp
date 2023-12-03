@@ -93,6 +93,10 @@ dependencies {
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.6.21")
+
+    testImplementation("androidx.test.ext:junit:1.1.5")
+    testImplementation("androidx.test:runner:1.5.2")
 
 
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")

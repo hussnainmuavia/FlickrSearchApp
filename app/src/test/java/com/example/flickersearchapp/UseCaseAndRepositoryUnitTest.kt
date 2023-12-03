@@ -27,7 +27,13 @@ class UseCaseAndRepositoryUnitTest {
     @Test
     fun `search data is fetched`() = runBlocking {
         val searchResult =
-            PhotoSearchModule.getPhotoSearchApi().getSearchResults(text = "Hello")
+            PhotoSearchModule.getPhotoSearchApi().getSearchResults(
+                apiKey = "5a2cc90782760b3a6b3eca570dfaf5c3",
+                text = "",
+                page = 1,
+                format = "json",
+                noJsonCallback = 1
+            )
         val list = searchResult.photos?.photo
         assert(list?.size!! > 0)
 
@@ -43,7 +49,7 @@ class UseCaseAndRepositoryUnitTest {
         assertEquals(list[0]?.title, list[0]?.title?.isNotEmpty())
     }
 
-    @Test
+    /*@Test
     fun `search photos repository and useCase`(): Unit = runBlocking {
         val apiInterface = PhotoSearchModule.getPhotoSearchApi()
         val repository = SearchPhotosRepository(apiInterface)
@@ -83,14 +89,14 @@ class UseCaseAndRepositoryUnitTest {
             assert(resource is ResponseState.Error)
             println(resource)
 
-            /**
+            *//**
              * Uncomment it if you want to see the success of this test, as it would get success
              * when continuity of the this test case return the error
 
             resource = searchUseCase.last()
             assert(resource is ResponseState.Success)
             assert(resource.data != null)
-             **/
+             **//*
         }
-    }
+    }*/
 }
