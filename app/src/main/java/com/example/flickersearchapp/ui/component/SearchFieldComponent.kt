@@ -32,6 +32,7 @@ fun SearchFieldComponent(
     modifier: Modifier = Modifier,
     placeholder: String? = null,
     label: String? = null,
+    onSearchAction: () -> Unit = {},
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -85,6 +86,7 @@ fun SearchFieldComponent(
             keyboardActions = KeyboardActions(
                 onSearch = {
                     focusManager.clearFocus()
+                    onSearchAction()
                 },
             ),
             modifier = Modifier

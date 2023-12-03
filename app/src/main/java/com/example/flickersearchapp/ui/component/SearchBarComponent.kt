@@ -24,7 +24,8 @@ fun SearchBarComponent(
     searchText: String = "",
     onTextChange: (text: String) -> Unit = {},
     onSearchTextSubmit: () -> Unit = {},
-    trailingIconClick: (text: String) -> Unit = {}
+    trailingIconClick: (text: String) -> Unit = {},
+    onSearchAction: () -> Unit = {},
 ) {
     Surface {
         Row(
@@ -46,6 +47,9 @@ fun SearchBarComponent(
                 },
                 label = label,
                 placeholder = placeholder,
+                onSearchAction = {
+                    onSearchAction()
+                }
             )
 
             Button(

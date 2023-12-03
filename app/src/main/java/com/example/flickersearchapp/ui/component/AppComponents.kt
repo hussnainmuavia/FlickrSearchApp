@@ -12,8 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -27,18 +29,21 @@ fun PhotoItem(modifier: Modifier = Modifier, photo: Photo? = null) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = Transparent, shape = RoundedCornerShape(4.dp)),
+            .padding(horizontal = 8.dp)
+            .background(color = Transparent, shape = RoundedCornerShape(8.dp)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
             modifier = modifier
                 .padding(top = 16.dp)
-                .background(color = Gray),
+                .background(color = Gray, shape = RoundedCornerShape(8.dp)),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
+                contentScale = ContentScale.Crop,
                 modifier = modifier
-                    .size(60.dp)
+                    .size(70.dp)
+                    .clip(shape = RoundedCornerShape(8.dp))
                     .fillMaxWidth(),
                 model = loadImage(photo),
                 contentDescription = "Image",

@@ -51,6 +51,9 @@ fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
                 viewModel.updatedSearchText(it)
                 viewModel.setSearch(it)
             },
+            onSearchAction = {
+                viewModel.setSearch(viewModel.searchText)
+            }
         )
 
         if (lazyPagingItems.loadState.append == LoadState.Loading ||
