@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -22,6 +24,9 @@ android {
             useSupportLibrary = true
         }
         multiDexEnabled = true
+
+        val key: String = gradleLocalProperties(rootDir).getProperty("FLICKER_API_KEY") ?: ""
+        buildConfigField("String", "FLICKER_API_KEY", "\"$key\"")
     }
 
     buildTypes {
@@ -42,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -78,7 +84,11 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
     //Pagination
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+    // optional - Jetpack Compose integration
     implementation("androidx.paging:paging-compose:3.3.0-alpha02")
+    // alternatively - without Android dependencies for tests
+    testImplementation("androidx.paging:paging-common-ktx:3.2.1")
 
     //Dagger - Hilt
     implementation ("com.google.dagger:hilt-android:2.48.1")
@@ -94,16 +104,10 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.6.21")
-
     testImplementation("androidx.test.ext:junit:1.1.5")
     testImplementation("androidx.test:runner:1.5.2")
 
 
-    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
-    // optional - Jetpack Compose integration
-    implementation("androidx.paging:paging-compose:3.3.0-alpha02")
-    // alternatively - without Android dependencies for tests
-    testImplementation("androidx.paging:paging-common-ktx:3.2.1")
 }
 
 // Allow references to generated code
