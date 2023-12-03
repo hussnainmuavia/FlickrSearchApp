@@ -24,6 +24,13 @@ import coil.compose.AsyncImage
 import com.example.flickersearchapp.domain.models.Photo
 import com.example.flickersearchapp.ui.theme.FlickerSearchAppTheme
 
+/**
+ * [PhotoItem] is a row item that would being used in a list component [PhotosList] as a list
+ * item to display the possible search items.
+ * [PhotoItem] contains an AsyncImage and a Text to display the results that being passed from the
+ * [Photo] object as an argument. Then build a concatenated url from the utility [loadImage]
+ * based on the [photo] properties
+ */
 @Composable
 fun PhotoItem(modifier: Modifier = Modifier, photo: Photo? = null) {
     Row(
@@ -60,6 +67,11 @@ fun PhotoItem(modifier: Modifier = Modifier, photo: Photo? = null) {
     }
 }
 
+/**
+ * [loadImage] is a utility to build url from [Photo] object. it takes [photo] as argument and
+ * perform concatenation and return the url to display the image. if [photo] is empty it will return
+ * empty string
+ */
 fun loadImage(photo: Photo? = null): String {
     photo?.let {
         return "https://farm${it.farm}.staticflickr.com/${it.server}/${it.id}_${it.secret}.jpg"
@@ -75,6 +87,9 @@ fun FlickerItemPreview() {
     }
 }
 
+/**
+*  A loading progress bar to display the loading behaviour.
+*/
 @Composable
 fun LoadingDialog() {
     Dialog(

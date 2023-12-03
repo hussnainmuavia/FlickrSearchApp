@@ -29,11 +29,11 @@ import com.example.flickersearchapp.viewmodels.HomeScreenViewModel
 fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
 
     val lazyPagingItems: LazyPagingItems<Photo> = viewModel.searchData.collectAsLazyPagingItems()
-    val uiState by viewModel.uiState.collectAsState()
+    /* val uiState by viewModel.uiState.collectAsState()
 
     if (uiState.isLoading) {
         LoadingDialog()
-    }
+    }*/
 
     Column(
         modifier = Modifier
@@ -58,10 +58,19 @@ fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
             }
         )
 
+        /**
+         * When user will press the search button and the API call hit,
+         * it will display the loading progress bar.
+         * This will be displayed upon two conditions for now as
+         * when the [loadState] would be [append] or [refresh].
+         */
         if (lazyPagingItems.loadState.append == LoadState.Loading ||
             lazyPagingItems.loadState.refresh == LoadState.Loading) {
             LoadingDialog()
         }
+        /**
+         * A list component to display the search items.
+         */
         PhotosList(
             lazyPagingItems = lazyPagingItems
         )

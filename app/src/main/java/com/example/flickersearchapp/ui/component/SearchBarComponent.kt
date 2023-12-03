@@ -21,13 +21,13 @@ import com.example.flickersearchapp.ui.theme.FlickerSearchAppTheme
 @Composable
 fun SearchBarComponent(
     modifier: Modifier = Modifier,
-    label: String = LocalContext.current.getString(R.string.label_search),
-    placeholder: String = LocalContext.current.getString(R.string.label_search),
-    searchText: String = "",
-    onTextChange: (text: String) -> Unit = {},
-    onSearchTextSubmit: () -> Unit = {},
-    trailingIconClick: (text: String) -> Unit = {},
-    onSearchAction: () -> Unit = {},
+    label: String = LocalContext.current.getString(R.string.label_search), // default values
+    placeholder: String = LocalContext.current.getString(R.string.label_search), // default values
+    searchText: String = "", // query to search
+    onTextChange: (text: String) -> Unit = {}, //it will call whenever new input would be added
+    onSearchTextSubmit: () -> Unit = {}, // a call when pressed the button to submit search for API
+    trailingIconClick: (text: String) -> Unit = {}, // it will clear the text from search field
+    onSearchAction: () -> Unit = {}, // the action click from Keyboard Search button
 ) {
     Surface {
         Row(
