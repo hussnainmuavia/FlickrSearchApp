@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,11 +27,6 @@ import com.example.flickersearchapp.viewmodels.HomeScreenViewModel
 fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
 
     val lazyPagingItems: LazyPagingItems<Photo> = viewModel.searchData.collectAsLazyPagingItems()
-    /* val uiState by viewModel.uiState.collectAsState()
-
-    if (uiState.isLoading) {
-        LoadingDialog()
-    }*/
 
     Column(
         modifier = Modifier

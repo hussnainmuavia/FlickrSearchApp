@@ -5,15 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import com.example.flickersearchapp.domain.models.Photo
 import com.example.flickersearchapp.domain.usecases.SearchPhotosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
@@ -21,9 +18,6 @@ import javax.inject.Inject
 class HomeScreenViewModel @Inject constructor(
     private val searchUseCase: SearchPhotosUseCase
 ) : ViewModel() {
-
-    private val _uiState = MutableStateFlow(PhotoSearchState())
-    val uiState: StateFlow<PhotoSearchState> = _uiState.asStateFlow()
 
     /**
      * mutable State [searchText] of string type that would
@@ -55,38 +49,4 @@ class HomeScreenViewModel @Inject constructor(
     val searchData = search.flatMapLatest { query ->
         searchUseCase(query = query, viewModelScope)
     }
-
-    /* fun getSearch() = viewModelScope.launch(Dispatchers.IO) {
-         searchUseCase(query = searchText, viewModelScope).collect { responseState ->
-             when (responseState) {
-                 is ResponseState.Loading<*> -> {
-                     _uiState.update { PhotoSearchState(isLoading = true) }
-                 }
-
-                 is ResponseState.Success<*> -> {
-                     _uiState.update {
-                         PhotoSearchState(
-                             isLoading = false,
-                             photosList = responseState
-                         )
-                     }
-                 }
-
-                 is ResponseState.Error<*> -> {
-                     _uiState.update {
-                         PhotoSearchState(
-                             isLoading = false,
-                             message = responseState.message ?: "An unexpected error occurred"
-                         )
-                     }
-                 }
-             }
-         }
-     }*/
-
-    data class PhotoSearchState(
-        val isLoading: Boolean = false,
-        val photosList: Flow<PagingData<Photo>>? = null,
-        val message: String = ""
-    )
 }

@@ -1,5 +1,6 @@
 package com.example.flickersearchapp
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.flickersearchapp.di.PhotoSearchModule
 import com.example.flickersearchapp.domain.repository.SearchPhotosRepository
@@ -10,7 +11,12 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
@@ -23,6 +29,7 @@ class HomeScreenViewModelTest {
     private val searchPhotosUseCase = SearchPhotosUseCase(this.photosRepository)
     private val homeScreenViewModel = HomeScreenViewModel(searchPhotosUseCase)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `when search text set then resource should be success`() {
         runTest {
@@ -30,6 +37,12 @@ class HomeScreenViewModelTest {
 
             CoroutineScope(Dispatchers.IO).launch {
                 homeScreenViewModel.setSearch(homeScreenViewModel.searchText)
+                homeScreenViewModel.searchData.flatMapLatest { query ->
+                    searchPhotosUseCase(query = homeScreenViewModel.searchText, homeScreenViewModel.viewModelScope)
+                }
+                assert  (homeScreenViewModel.searchData.count() > 0)
+                val first = homeScreenViewModel.searchData.first()
+                assert  (first.equals(homeScreenViewModel.searchData))
             }
             assert(homeScreenViewModel.searchText == "Hello")
             //assert(homeScreenViewModel.searchData.collectAsLazyPagingItems().itemCount > 0 )

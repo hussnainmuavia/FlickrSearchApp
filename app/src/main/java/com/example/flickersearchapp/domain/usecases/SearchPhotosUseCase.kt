@@ -22,37 +22,6 @@ class SearchPhotosUseCase @Inject constructor(private val repository: SearchPhot
             initialKey = INITIAL_PAGE_KEY,
             pagingSourceFactory = {
                 SearchPhotoPagingSource(query, repository)
-            }).flow.cachedIn(viewModelScope)
+            }).flow//.cachedIn(viewModelScope)
     }
-
-
-    /*operator fun invoke(query: String, viewModelScope: CoroutineScope): Flow<ResponseState<Pager<Int, Photo>>> = flow {
-            try {
-                emit(ResponseState.Loading<Pager<Int, Photo>>())
-                val result = Pager(
-                    config = PagingConfig(pageSize = PAGE_SIZE),
-                    initialKey = INITIAL_PAGE_KEY,
-                    pagingSourceFactory = {
-                        SearchPhotoPagingSource(query, repository)
-                    }
-                )
-
-                emit(ResponseState.Success(data = result))
-
-            } catch (ex: HttpException) {
-                ex.localizedMessage ?: "An unexpected error occurred"
-                emit(ResponseState.Error<Pager<Int, Photo>>(message = ex.localizedMessage ?: "An unexpected error occurred"))
-            } catch (ex: IOException) {
-                ex.localizedMessage ?: "Network error occurred"
-                emit(ResponseState.Error<Pager<Int, Photo>>(message = "Network failed"))
-            }
-
-            *//*return Pager(
-                config = PagingConfig(pageSize = PAGE_SIZE),
-                initialKey = INITIAL_PAGE_KEY,
-                pagingSourceFactory = {
-                    SearchPhotoPagingSource(query, repository)
-                }
-            ).flow.cachedIn(viewModelScope)*//*
-        }*/
 }
