@@ -12,6 +12,8 @@ The app should display a search field and a button. When the user inputs a searc
 the search button the resulting images should be displayed in a List.
 
 * Use this "https://www.flickr.com/services/api/flickr.photos.search.html" API to load the items
+* NOTE : Please place API Key in your local.properties file as a constant FLICKER_API_KEY. e.g FLICKER_API_KEY=5a*************c3
+* I did this intentionally to demonstrate the mechanism to secure API keys and credentials if place locally.
 
 #### Application Detail
 
