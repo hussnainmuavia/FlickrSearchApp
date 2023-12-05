@@ -90,6 +90,15 @@ dependencies {
     // alternatively - without Android dependencies for tests
     testImplementation("androidx.paging:paging-common-ktx:3.2.1")
 
+    // optional - RxJava2 support
+    implementation("androidx.paging:paging-rxjava2-ktx:3.2.1")
+    // optional - RxJava3 support
+    implementation("androidx.paging:paging-rxjava3:3.2.1")
+    // optional - Guava ListenableFuture support
+    implementation("androidx.paging:paging-guava:3.2.1")
+    // optional - Jetpack Compose integration
+    implementation("androidx.paging:paging-compose:3.3.0-alpha02")
+
     //Dagger - Hilt
     implementation ("com.google.dagger:hilt-android:2.48.1")
     kapt("com.google.dagger:hilt-compiler:2.48.1")

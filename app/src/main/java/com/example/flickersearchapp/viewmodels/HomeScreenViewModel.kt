@@ -5,9 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.flickersearchapp.domain.models.Photo
 import com.example.flickersearchapp.domain.usecases.SearchPhotosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -43,10 +47,10 @@ class HomeScreenViewModel @Inject constructor(
      * performing the request, and pushing the query result back to the UI.
      * */
     private val _search = MutableStateFlow("")
-    private val search = _search.asStateFlow()
+    val search = _search.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val searchData = search.flatMapLatest { query ->
-        searchUseCase(query = query, viewModelScope)
+    val searchData: Flow<PagingData<Photo>> = search.flatMapLatest { query ->
+        searchUseCase.invoke(query = query).cachedIn(viewModelScope)
     }
 }

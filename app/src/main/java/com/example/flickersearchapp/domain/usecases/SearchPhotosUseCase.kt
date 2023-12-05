@@ -17,11 +17,11 @@ class SearchPhotosUseCase @Inject constructor(private val repository: SearchPhot
         private const val PAGE_SIZE = 20
     }
 
-    operator fun invoke(query: String, viewModelScope: CoroutineScope): Flow<PagingData<Photo>> {
+    operator fun invoke(query: String): Flow<PagingData<Photo>> {
         return Pager(config = PagingConfig(pageSize = PAGE_SIZE),
             initialKey = INITIAL_PAGE_KEY,
             pagingSourceFactory = {
                 SearchPhotoPagingSource(query, repository)
-            }).flow//.cachedIn(viewModelScope)
+            }).flow
     }
 }
