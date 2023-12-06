@@ -54,16 +54,10 @@ fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
 
         /**
          * When user will press the search button and the API call hit,
-         * it will display the loading progress bar.
+         * it will display the loading progress bar if the success hit otherwise display error message
          * This will be displayed upon two conditions for now as
          * when the [loadState] would be [append] or [refresh].
          */
-        /* if (lazyPagingItems.loadState.append == LoadState.Loading ||
-             lazyPagingItems.loadState.refresh == LoadState.Loading) {
-             LoadingDialog()
-
-         }*/
-
         if ((lazyPagingItems.loadState.refresh == LoadState.Loading) ||
             (lazyPagingItems.loadState.append == LoadState.Loading)) {
             LoadingDialog()
