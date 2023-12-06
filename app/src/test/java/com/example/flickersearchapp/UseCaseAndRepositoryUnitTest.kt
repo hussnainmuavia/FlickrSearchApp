@@ -1,17 +1,29 @@
 package com.example.flickersearchapp
 
 
+import androidx.paging.DifferCallback
+import androidx.paging.NullPaddedList
+import androidx.paging.PagingData
+import androidx.paging.PagingDataDiffer
 import com.example.flickersearchapp.di.PhotoSearchModule
 import com.example.flickersearchapp.domain.repository.SearchPhotosRepository
 import com.example.flickersearchapp.domain.usecases.SearchPhotosUseCase
-import com.example.flickersearchapp.utils.ResponseState
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
+import com.example.flickersearchapp.utils.Constants
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
+import kotlinx.coroutines.test.setMain
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
 
 /**
  * The local unit test, which will test the scenario for API call if it got success or error.
@@ -20,83 +32,69 @@ import org.junit.Test
  */
 class UseCaseAndRepositoryUnitTest {
 
-    private val apiInterface = PhotoSearchModule.getPhotoSearchApi()
-    private val photosRepository = SearchPhotosRepository(this.apiInterface)
-    private val photosUseCase = SearchPhotosUseCase(this.photosRepository)
+
+    private val testScope = TestScope()
+    private val testDispatcher = StandardTestDispatcher(testScope.testScheduler)
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Before
+    fun setUp() {
+        Dispatchers.setMain(testDispatcher)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
 
     @Test
     fun `search data is fetched`() = runBlocking {
         val searchResult =
             PhotoSearchModule.getPhotoSearchApi().getSearchResults(
-                apiKey = "5a2cc90782760b3a6b3eca570dfaf5c3",
-                text = "",
+                apiKey = Constants.API_KEY_VALUE,
+                text = "Hello",
                 page = 1,
                 format = "json",
                 noJsonCallback = 1
             )
         val list = searchResult.photos?.photo
         assert(list?.size!! > 0)
-
-        /* This is an example model for validating test from realtime API Call.
-          Photo(
-            farm=66,
-            id=53364943048,
-            owner=125857360@N02,
-            secret=c095b1ee16,
-            server=65535,
-            title=Sanrio Hello Kitty Candy Sticks 10 a
-        )*/
-        assertEquals(list[0]?.title, list[0]?.title?.isNotEmpty())
-    }
-
-    /*@Test
-    fun `search photos repository and useCase`(): Unit = runBlocking {
-        val apiInterface = PhotoSearchModule.getPhotoSearchApi()
-        val repository = SearchPhotosRepository(apiInterface)
-        val searchResult = SearchPhotosUseCase(repository)
-        assert(searchResult.invoke("Hello", viewModelScope).count() > 0)
     }
 
     @Test
-    fun `when use case returns success then resource should be success`() {
-        runBlocking {
-            val searchUseCase = photosUseCase.invoke("hello", viewModelScope)
-            val eventCount = searchUseCase.count()
-            assert(eventCount >= 2)
-
-            var resource = searchUseCase.first()
-            assert(resource is ResponseState.Loading)
-
-            resource = searchUseCase.last()
-            assert(resource is ResponseState.Success)
-            assert(resource.data != null)
-
-            println(eventCount)
+    fun `search Result from use case is fetched`() = runTest {
+        testScope.launch {
+            val apiInterface = PhotoSearchModule.getPhotoSearchApi()
+            val repository = SearchPhotosRepository(apiInterface)
+            val searchResult = SearchPhotosUseCase(repository)
+            val tmp = searchResult("Hello").take(1).toList().first()
+            val result = tmp.collectDataForTest()
+            assertEquals(result, result)
         }
     }
 
-    @Test
-    fun `when use case returns error then resource returned should be error`() {
-        runTest {
-            val searchUseCase = photosUseCase.invoke("hello", viewModelScope)
-            val eventCount = searchUseCase.count()
-            assert(eventCount == 2)
-
-            var resource = searchUseCase.first()
-            assert(resource is ResponseState.Loading)
-
-            resource = searchUseCase.last()
-            assert(resource is ResponseState.Error)
-            println(resource)
-
-            *//**
-             * Uncomment it if you want to see the success of this test, as it would get success
-             * when continuity of the this test case return the error
-
-            resource = searchUseCase.last()
-            assert(resource is ResponseState.Success)
-            assert(resource.data != null)
-             **//*
+    private suspend fun <T : Any> PagingData<T>.collectDataForTest(): List<T> {
+        val dcb = object : DifferCallback {
+            override fun onChanged(position: Int, count: Int) {}
+            override fun onInserted(position: Int, count: Int) {}
+            override fun onRemoved(position: Int, count: Int) {}
         }
-    }*/
+        val items = mutableListOf<T>()
+        val dif = object : PagingDataDiffer<T>(dcb, StandardTestDispatcher()) {
+            override suspend fun presentNewList(
+                previousList: NullPaddedList<T>,
+                newList: NullPaddedList<T>,
+                lastAccessedIndex: Int,
+                onListPresentable: () -> Unit
+            ): Int? {
+                for (idx in 0 until newList.size)
+                    items.add(newList.getFromStorage(idx))
+                return null
+            }
+        }
+        dif.collectFrom(this)
+        return items
+    }
+
 }

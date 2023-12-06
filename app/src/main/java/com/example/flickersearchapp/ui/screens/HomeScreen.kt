@@ -1,6 +1,7 @@
 package com.example.flickersearchapp.ui.screens
 
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -57,10 +58,27 @@ fun HomeScreen(viewModel: HomeScreenViewModel = hiltViewModel()) {
          * This will be displayed upon two conditions for now as
          * when the [loadState] would be [append] or [refresh].
          */
-        if (lazyPagingItems.loadState.append == LoadState.Loading ||
-            lazyPagingItems.loadState.refresh == LoadState.Loading) {
+        /* if (lazyPagingItems.loadState.append == LoadState.Loading ||
+             lazyPagingItems.loadState.refresh == LoadState.Loading) {
+             LoadingDialog()
+
+         }*/
+
+        if ((lazyPagingItems.loadState.refresh == LoadState.Loading) ||
+            (lazyPagingItems.loadState.append == LoadState.Loading)) {
             LoadingDialog()
         }
+        if ((lazyPagingItems.loadState.refresh is LoadState.Error) ||
+            (lazyPagingItems.loadState.append is LoadState.Error)) {
+            // SomeCatchableException
+            val error = (lazyPagingItems.loadState.refresh as LoadState.Error).error
+            Toast.makeText(
+                LocalContext.current,
+                error.localizedMessage ?: "Something went wrong",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
         /**
          * A list component to display the search items.
          */
